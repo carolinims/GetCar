@@ -1,12 +1,40 @@
 package br.com.pos.puc.getCar.domain;
 
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
-public class Usuario {
-	private Integer id;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("U")
+public class Usuario implements UserDetails{
+		
+	private static final long serialVersionUID = 1L;
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idUsuario;
 	private String login;
 	private String senha;
-	private PerfilUsuario perfil;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Perfil> perfis = new ArrayList<>();
 
 	/**
 	 * 
@@ -18,19 +46,31 @@ public class Usuario {
 	 * @param id
 	 * @param login
 	 * @param senha
-	 * @param perfil
+	 * @param perfis
 	 */
-	public Usuario(Integer id, String login, String senha, PerfilUsuario perfil) {
+	public Usuario(Long id, String login, String senha, List<Perfil> perfis) {
 		super();
-		this.id = id;
+		this.idUsuario = id;
 		this.login = login;
 		this.senha = senha;
-		this.perfil = perfil;
+		this.perfis = perfis;
+	}
+	
+	/**
+	 * @param login
+	 * @param senha
+	 * @param perfil
+	 */
+	public Usuario(String login, String senha, List<Perfil> perfis) {
+		super();
+		this.login = login;
+		this.senha = senha;
+		this.perfis = perfis;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(idUsuario);
 	}
 
 	@Override
@@ -42,21 +82,27 @@ public class Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(idUsuario, other.idUsuario);
+	}
+	
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + idUsuario + ", login=" + login + ", senha=" + senha + ", perfis=" + perfis.toString() + "]";
 	}
 
 	/**
-	 * @return the id
+	 * @return the idUsuario
 	 */
-	public Integer getId() {
-		return id;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param idUsuario the idUsuario to set
 	 */
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	/**
@@ -88,18 +134,56 @@ public class Usuario {
 	}
 
 	/**
-	 * @return the perfil
+	 * @return the perfis
 	 */
-	public PerfilUsuario getPerfil() {
-		return perfil;
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+	
+	
+	/**
+	 * @param perfis the perfis to set
+	 */
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
 	}
 
-	/**
-	 * @param perfil the perfil to set
-	 */
-	public void setPerfil(PerfilUsuario perfil) {
-		this.perfil = perfil;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public String getPassword() {
+		return this.senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
 
 
 }

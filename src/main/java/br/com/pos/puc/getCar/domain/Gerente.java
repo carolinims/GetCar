@@ -8,8 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@DiscriminatorValue("A")
-public class Atendente extends Usuario{
+@DiscriminatorValue("G")
+public class Gerente extends Usuario{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -19,10 +19,7 @@ public class Atendente extends Usuario{
 	@JoinColumn(name = "idAgenciaAuto")
 	private AgenciaAutomotiva agAutomotiva;
 
-	/**
-	 * 
-	 */
-	public Atendente() {
+	public Gerente() {
 		super();
 	}
 
@@ -30,7 +27,7 @@ public class Atendente extends Usuario{
 	 * @param nome
 	 * @param agAutomotiva
 	 */
-	public Atendente(String nome, AgenciaAutomotiva agAutomotiva) {
+	public Gerente(String nome, AgenciaAutomotiva agAutomotiva) {
 		super();
 		this.nome = nome;
 		this.agAutomotiva = agAutomotiva;
@@ -38,7 +35,7 @@ public class Atendente extends Usuario{
 
 	@Override
 	public String toString() {
-		return "Atendente [nome=" + nome + ", agAutomotiva=" + agAutomotiva + "]";
+		return "Gerente [nome=" + nome + ", agAutomotiva=" + agAutomotiva + "]";
 	}
 
 	/**
@@ -68,6 +65,6 @@ public class Atendente extends Usuario{
 	public void setAgAutomotiva(AgenciaAutomotiva agAutomotiva) {
 		this.agAutomotiva = agAutomotiva;
 	}
-	
+
 	
 }

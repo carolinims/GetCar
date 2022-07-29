@@ -1,22 +1,8 @@
-package br.com.pos.puc.getCar.domain;
+package br.com.pos.puc.getCar.controller.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
+import br.com.pos.puc.getCar.domain.Endereco;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Endereco implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EnderecoDto {
 	private Long id;
 	private String logradouro;
 	private Integer numero;
@@ -26,13 +12,7 @@ public class Endereco implements Serializable{
 	private String estado;
 	
 	/**
-	 * 
-	 */
-	public Endereco() {
-		super();
-	}
-
-	/**
+	 * @param id
 	 * @param logradouro
 	 * @param numero
 	 * @param cEP
@@ -40,7 +20,8 @@ public class Endereco implements Serializable{
 	 * @param cidade
 	 * @param estado
 	 */
-	public Endereco(Long id, String logradouro, Integer numero, String cEP, String complemento, String cidade, String estado) {
+	public EnderecoDto(Long id, String logradouro, Integer numero, String cEP, String complemento, String cidade,
+			String estado) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -51,21 +32,24 @@ public class Endereco implements Serializable{
 		this.estado = estado;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Endereco other = (Endereco) obj;
-		return Objects.equals(id, other.id);
+	/**
+	 * @param id
+	 * @param logradouro
+	 * @param numero
+	 * @param cEP
+	 * @param complemento
+	 * @param cidade
+	 * @param estado
+	 */
+	public EnderecoDto(Endereco endereco) {
+		super();
+		this.id = endereco.getId();
+		this.logradouro = endereco.getLogradouro();
+		this.numero = endereco.getNumero();
+		this.cep = endereco.getCEP();
+		this.complemento = endereco.getComplemento();
+		this.cidade = endereco.getCidade();
+		this.estado = endereco.getEstado();
 	}
 
 	/**
@@ -111,17 +95,17 @@ public class Endereco implements Serializable{
 	}
 
 	/**
-	 * @return the cEP
+	 * @return the cep
 	 */
-	public String getCEP() {
+	public String getCep() {
 		return cep;
 	}
 
 	/**
-	 * @param cEP the cEP to set
+	 * @param cep the cep to set
 	 */
-	public void setCEP(String cEP) {
-		cep = cEP;
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 
 	/**
@@ -166,6 +150,4 @@ public class Endereco implements Serializable{
 		this.estado = estado;
 	}
 
-
-	
 }
