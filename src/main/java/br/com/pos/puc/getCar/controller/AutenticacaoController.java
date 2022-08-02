@@ -2,6 +2,7 @@ package br.com.pos.puc.getCar.controller;
 
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ import br.com.pos.puc.getCar.controller.form.LoginForm;
 @RequestMapping("/autentic")
 public class AutenticacaoController {
 	
+	private final static Logger logger = Logger.getLogger(AutenticacaoController.class);
+	
 	@Autowired
 	private AuthenticationManager authManager;
 	
@@ -35,9 +38,11 @@ public class AutenticacaoController {
 			Authentication authentication = authManager.authenticate(dadosLogin);
 			String token = tokenService.gerarToken(authentication);
 			
+			logger.info(String.format("Usuario [%s] autenticado com sucesso", form.getLogin()));
 			return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+			
 		} catch (AuthenticationException e) {
-			System.out.println(e.getMessage());
+			logger.error(String.format("Falha de autenticação do usuario [%s] - [%s]", form.getLogin(), e.getMessage()));
 			return ResponseEntity.badRequest().build();
 		}
 	}

@@ -30,16 +30,17 @@ import br.com.pos.puc.getCar.controller.form.UsuarioForm;
 import br.com.pos.puc.getCar.domain.Cliente;
 import br.com.pos.puc.getCar.domain.Perfil;
 import br.com.pos.puc.getCar.domain.Usuario;
+import br.com.pos.puc.getCar.exception.NotFoundException;
 import br.com.pos.puc.getCar.repository.ClienteRepository;
 import br.com.pos.puc.getCar.repository.PerfilRepository;
-import br.com.pos.puc.getCar.repository.UserRepository;
+import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UsuarioController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository userRepository;
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -66,7 +67,7 @@ public class UserController {
 			return ResponseEntity.ok(new UserDto(usuario.get()));
 		}
 		
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException(String.format("Usuario de id [%s] não encontrado", id), null);
 	}
 	
 	@GetMapping()
@@ -82,7 +83,7 @@ public class UserController {
 			return ResponseEntity.ok(listUserDto);
 		}
 		
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException(String.format("Nenhum usuario encontrado"), "a lista de usuarios está vazia");
 	}
 	
 	@DeleteMapping("/{id}")
@@ -94,7 +95,7 @@ public class UserController {
 			return ResponseEntity.ok().build();
 		}
 		
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException(String.format("Erro ao excluir usuario de id [%s]", id), null);
 	}
 	
 	@PostMapping("/cadastrarCliente")
@@ -115,9 +116,6 @@ public class UserController {
 		
 		URI uri = uriBuilder.path("/user/{id}").buildAndExpand(cliente.getIdUsuario()).toUri();
 		
-		Date teste = new Date();
-		System.out.println("AQUI" + teste);
-		
 		return ResponseEntity.created(uri).body(new ClienteDto(cliente));
 	}
 	
@@ -129,7 +127,7 @@ public class UserController {
 			return ResponseEntity.ok(new ClienteDto(cliente.get()));
 		}
 		
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException(String.format("Cliente de id [%s] não encontrado", id), null);
 	}
 	
 	@GetMapping("/listarCliente")
@@ -145,7 +143,7 @@ public class UserController {
 			return ResponseEntity.ok(listClienteDto);
 		}
 		
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException(String.format("Nenhum cliente encontrado"), "a lista de clientes está vazia");
 	}
 
 }

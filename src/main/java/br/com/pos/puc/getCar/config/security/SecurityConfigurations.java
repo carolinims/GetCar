@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.pos.puc.getCar.repository.UserRepository;
+import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration
@@ -27,7 +27,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 	private TokenService tokenService;
 	
 	@Autowired
-	private UserRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	@Bean

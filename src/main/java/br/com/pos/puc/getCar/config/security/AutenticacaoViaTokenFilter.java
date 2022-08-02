@@ -13,17 +13,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.pos.puc.getCar.domain.Usuario;
-import br.com.pos.puc.getCar.repository.UserRepository;
+import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter{
 
 	private TokenService tokenService;
-	private UserRepository repository;
+	private UsuarioRepository repository;
 
 	/**
 	 * @param tokenService
 	 */
-	public AutenticacaoViaTokenFilter(TokenService tokenService, UserRepository repository) {
+	public AutenticacaoViaTokenFilter(TokenService tokenService, UsuarioRepository repository) {
 		this.tokenService = tokenService;
 		this.repository = repository;
 	}

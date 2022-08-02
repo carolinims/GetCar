@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.pos.puc.getCar.domain.Usuario;
-import br.com.pos.puc.getCar.repository.UserRepository;
+import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
 @Service
 public class AutenticacaoService implements UserDetailsService{
 
 	@Autowired
-	private UserRepository repository;
+	private UsuarioRepository repository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
