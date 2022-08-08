@@ -1,5 +1,7 @@
 package br.com.pos.puc.getCar.domain;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -27,8 +29,8 @@ public class Gerente extends Usuario{
 	 * @param nome
 	 * @param agAutomotiva
 	 */
-	public Gerente(String nome, AgenciaAutomotiva agAutomotiva) {
-		super();
+	public Gerente(Long id, String login, String senha, List<Perfil> perfis, String nome, AgenciaAutomotiva agAutomotiva) {
+		super(id, login, senha, perfis);
 		this.nome = nome;
 		this.agAutomotiva = agAutomotiva;
 	}

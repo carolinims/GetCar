@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.pos.puc.getCar.controller.dto.ClienteDto;
-import br.com.pos.puc.getCar.controller.dto.UserDto;
+import br.com.pos.puc.getCar.controller.dto.UsuarioDto;
 import br.com.pos.puc.getCar.controller.form.ClienteForm;
 import br.com.pos.puc.getCar.controller.form.UsuarioForm;
 import br.com.pos.puc.getCar.domain.Cliente;
@@ -50,34 +50,34 @@ public class UsuarioController {
 		
 	@PostMapping
 	@Transactional
-	public ResponseEntity<UserDto> cadastrarUsuario(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder){
+	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder){
 		Usuario usuario = form.converter();
 		userRepository.save(usuario);
 		
 		URI uri = uriBuilder.path("/user/{id}").buildAndExpand(usuario.getIdUsuario()).toUri();
 		
-		return ResponseEntity.created(uri).body(new UserDto(usuario));
+		return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> consultarUsuario(@PathVariable Long id){
+	public ResponseEntity<UsuarioDto> consultarUsuario(@PathVariable Long id){
 		Optional<Usuario> usuario = userRepository.findById(id);
 		
 		if(usuario.isPresent()) {
-			return ResponseEntity.ok(new UserDto(usuario.get()));
+			return ResponseEntity.ok(new UsuarioDto(usuario.get()));
 		}
 		
 		throw new NotFoundException(String.format("Usuario de id [%s] não encontrado", id), null);
 	}
 	
 	@GetMapping()
-	public ResponseEntity<List<UserDto>> listarUsuarios(){
+	public ResponseEntity<List<UsuarioDto>> listarUsuarios(){
 		List<Usuario> listUsuario = userRepository.findAll();
 		
 		if(!listUsuario.isEmpty()) {
-			List<UserDto> listUserDto = new ArrayList<UserDto>();
+			List<UsuarioDto> listUserDto = new ArrayList<UsuarioDto>();
 			listUsuario.stream().forEach(usuario -> {
-				listUserDto.add(new UserDto(usuario));
+				listUserDto.add(new UsuarioDto(usuario));
 			});
 			
 			return ResponseEntity.ok(listUserDto);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.pos.puc.getCar.config.security.TokenService;
 import br.com.pos.puc.getCar.controller.dto.TokenDto;
 import br.com.pos.puc.getCar.controller.form.LoginForm;
+import br.com.pos.puc.getCar.exception.NotFoundException;
 
 @RestController
 @RequestMapping("/autentic")
@@ -43,7 +44,7 @@ public class AutenticacaoController {
 			
 		} catch (AuthenticationException e) {
 			logger.error(String.format("Falha de autenticação do usuario [%s] - [%s]", form.getLogin(), e.getMessage()));
-			return ResponseEntity.badRequest().build();
+			throw new NotFoundException(String.format("Usuario ou senha invalidos"), null);
 		}
 	}
 	

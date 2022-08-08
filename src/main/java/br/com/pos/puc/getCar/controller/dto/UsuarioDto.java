@@ -6,7 +6,7 @@ import java.util.List;
 import br.com.pos.puc.getCar.domain.Perfil;
 import br.com.pos.puc.getCar.domain.Usuario;
 
-public class UserDto {
+public class UsuarioDto {
 	private Long id;
 	private String login;
 	private String senha;
@@ -17,7 +17,7 @@ public class UserDto {
 	 * @param login
 	 * @param senha
 	 */
-	public UserDto(Long id, String login, String senha, List<PerfilDto> perfis) {
+	public UsuarioDto(Long id, String login, String senha, List<PerfilDto> perfis) {
 		super();
 		this.id = id;
 		this.login = login;
@@ -25,7 +25,7 @@ public class UserDto {
 		this.perfis = perfis;
 	}
 	
-	public UserDto(Usuario usuario) {
+	public UsuarioDto(Usuario usuario) {
 		this.id = usuario.getIdUsuario();
 		this.login = usuario.getLogin();
 		this.senha = usuario.getSenha();

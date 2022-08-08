@@ -45,4 +45,5 @@ public class PerfilForm {
 	public Perfil converter() {
 		return new Perfil(this.id, this.tipoUsuario);
 	}
+	
 }

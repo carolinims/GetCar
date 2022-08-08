@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public enum TipoCombustivel {
 	GASOLINA ("GASOLINA"),
 	ETANOL("ETANOL"),
+	FLEX("FLEX"),
 	DIESEL("DIESEL"),
 	ELETRICO("ELETRICO"),
 	HIBRIDO("HIBRIDO");

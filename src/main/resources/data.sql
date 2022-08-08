@@ -44,3 +44,10 @@ VALUES ('02390622', 'Itaquaquecetuba', 'casa', 'São Paulo', 'Rua da praia', 220
 INSERT INTO CLIENTE (cnh, data_nasc, documento, genero, nacionalidade, nome, telefone, id_usuario, endereco_id) 
 VALUES ('654321', '2021-11-29 18:47:52.69', 12345678998, 'Feminino', 'Brasileira', 'Maluzinha da silva', 1183384403, 3, 3);
 
+-- Insert agencia automotiva
+Insert into agencia_automotiva(nome_agencia, endereco_id) values ('Agencia Get Car Itaquá Centro', 1);
+
+-- Insert modelo do veiculo
+Insert into modelo (categoria, descr_modelo, marca, tipo_combustivel, tipo_motorizacao) values
+('HATCH',  'Veiculos do tipo HatchBack', 'TOYOTA',  'FLEX',  'MOTOR_1_4');
+

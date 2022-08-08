@@ -1,16 +1,13 @@
 package br.com.pos.puc.getCar.controller.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.pos.puc.getCar.domain.Cliente;
-import br.com.pos.puc.getCar.domain.Perfil;
 
 public class ClienteDto {
 	
-	private UserDto usuario;
+	private UsuarioDto usuario;
 	private String nome;
 	private Long documento;
 	private Date dataNasc;
@@ -31,7 +28,7 @@ public class ClienteDto {
 	 * @param nacionalidade
 	 * @param endereco
 	 */
-	public ClienteDto(UserDto usuario, String nome, Long documento, Date dataNasc, String cnh, String genero,
+	public ClienteDto(UsuarioDto usuario, String nome, Long documento, Date dataNasc, String cnh, String genero,
 			Integer telefone, String nacionalidade, EnderecoDto endereco) {
 		super();
 		this.usuario = usuario;
@@ -58,7 +55,7 @@ public class ClienteDto {
 	 */
 	public ClienteDto(Cliente cliente) {
 		super();
-		this.usuario = new UserDto(cliente.getIdUsuario(), cliente.getLogin(), cliente.getSenha(), 
+		this.usuario = new UsuarioDto(cliente.getIdUsuario(), cliente.getLogin(), cliente.getSenha(), 
 				cliente.getPerfis()
 				.stream()
 				.map(perfil -> new PerfilDto().converter(perfil))
@@ -77,13 +74,13 @@ public class ClienteDto {
 	/**
 	 * @return the usuario
 	 */
-	public UserDto getUsuario() {
+	public UsuarioDto getUsuario() {
 		return usuario;
 	}
 	/**
 	 * @param usuario the usuario to set
 	 */
-	public void setUsuario(UserDto usuario) {
+	public void setUsuario(UsuarioDto usuario) {
 		this.usuario = usuario;
 	}
 	/**
@@ -182,6 +179,4 @@ public class ClienteDto {
 	public void setEndereco(EnderecoDto endereco) {
 		this.endereco = endereco;
 	}
-	
-	
 }
