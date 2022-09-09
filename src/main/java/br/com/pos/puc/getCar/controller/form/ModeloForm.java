@@ -24,7 +24,6 @@ public class ModeloForm {
 	private TipoMotorizacao tipoMotorizacao;
 	private Marcas marca;
 	private CategoriaVeiculo categoria;
-	private Set<VeiculoForm> listVeiculoForm;
 	
 	/**
 	 * @return the idModelo
@@ -98,18 +97,6 @@ public class ModeloForm {
 	public void setCategoria(CategoriaVeiculo categoria) {
 		this.categoria = categoria;
 	}	
-	/**
-	 * @return the listVeiculoForm
-	 */
-	public Set<VeiculoForm> getListVeiculoForm() {
-		return listVeiculoForm;
-	}
-	/**
-	 * @param listVeiculoForm the listVeiculoForm to set
-	 */
-	public void setListVeiculoForm(Set<VeiculoForm> listVeiculoForm) {
-		this.listVeiculoForm = listVeiculoForm;
-	}
 	
 	public Modelo converter() {
 		return new Modelo(idModelo, 
@@ -117,10 +104,7 @@ public class ModeloForm {
 				tipoCombustivel, 
 				tipoMotorizacao, 
 				marca, 
-				categoria, 
-				getListVeiculoForm() == null ? null : this.getListVeiculoForm()
-				.stream()
-				.map(veiculoForm -> veiculoForm.converter())
-				.collect(Collectors.toSet()));
+				categoria);
+
 	}
 }

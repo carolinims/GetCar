@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.pos.puc.getCar.exception.BusinessException;
 import br.com.pos.puc.getCar.exception.ExceptionDto;
 import br.com.pos.puc.getCar.exception.NotFoundException;
 
@@ -25,7 +26,13 @@ public class ControllerException extends ResponseEntityExceptionHandler{
 	public final ResponseEntity<ExceptionDto> handlerNotFoundException(NotFoundException ex){
 		ExceptionDto exceptionDto = new ExceptionDto(ex.getMessage(), ex.getDetalhes());
 		return new ResponseEntity<ExceptionDto>(exceptionDto, HttpStatus.NOT_FOUND);
-	}	
+	}
+	
+	@ExceptionHandler(value = {BusinessException.class})
+	public final ResponseEntity<ExceptionDto> handlerBusinessException(BusinessException ex){
+		ExceptionDto exceptionDto = new ExceptionDto(ex.getMessage(), ex.getDetalhes());
+		return new ResponseEntity<ExceptionDto>(exceptionDto, HttpStatus.BAD_REQUEST);
+	}
 
 //	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //	@ExceptionHandler(value = {Exception.class, Throwable.class, AuthenticationException.class})

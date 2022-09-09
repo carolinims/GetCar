@@ -39,7 +39,7 @@ public class Modelo {
 	@Enumerated(EnumType.STRING)
 	private CategoriaVeiculo categoria;
 	
-	@OneToMany(mappedBy = "idVeiculo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "idVeiculo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Veiculo> listVeiculo;
 	
 	public Modelo() {
@@ -56,7 +56,7 @@ public class Modelo {
 	 * @param listVeiculo
 	 */
 	public Modelo(Long idModelo, String descrModelo, TipoCombustivel tipoCombustivel, TipoMotorizacao tipoMotorizacao,
-			Marcas marca, CategoriaVeiculo categoria, Set<Veiculo> listVeiculo) {
+			Marcas marca, CategoriaVeiculo categoria) {
 		super();
 		this.idModelo = idModelo;
 		this.descrModelo = descrModelo;
@@ -64,7 +64,6 @@ public class Modelo {
 		this.tipoMotorizacao = tipoMotorizacao;
 		this.marca = marca;
 		this.categoria = categoria;
-		this.listVeiculo = listVeiculo;
 	}
 
 	@Override
@@ -87,8 +86,7 @@ public class Modelo {
 	@Override
 	public String toString() {
 		return "Modelo [idModelo=" + idModelo + ", descrModelo=" + descrModelo + ", tipoCombustivel=" + tipoCombustivel
-				+ ", tipoMotorizacao=" + tipoMotorizacao + ", marca=" + marca + ", categoria=" + categoria
-				+ ", listVeiculo=" + listVeiculo + "]";
+				+ ", tipoMotorizacao=" + tipoMotorizacao + ", marca=" + marca + ", categoria=" + categoria;
 	}
 
 	/**

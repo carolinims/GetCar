@@ -25,9 +25,9 @@ public class Veiculo {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idVeiculo;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idAgenciaAuto")
-	private AgenciaAutomotiva agAutomotiva;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "idAgenciaAuto")
+//	private AgenciaAutomotiva agAutomotiva;
 	private String placaVeiculo;
 	private String renavam;
 	private Long valorHodometro;
@@ -67,7 +67,7 @@ public class Veiculo {
 			Modelo modelo) {
 		super();
 		this.idVeiculo = idVeiculo;
-		this.agAutomotiva = agAutomotiva;
+//		this.agAutomotiva = agAutomotiva;
 		this.placaVeiculo = placaVeiculo;
 		this.renavam = renavam;
 		this.valorHodometro = valorHodometro;
@@ -79,7 +79,7 @@ public class Veiculo {
 	
 	@Override
 	public String toString() {
-		return "Veiculo [idVeiculo=" + idVeiculo + ", agAutomotiva=" + agAutomotiva + ", placaVeiculo=" + placaVeiculo
+		return "Veiculo [idVeiculo=" + idVeiculo +/* ", agAutomotiva=" + agAutomotiva +*/ ", placaVeiculo=" + placaVeiculo
 				+ ", renavam=" + renavam + ", valorHodometro=" + valorHodometro + ", statusVeiculo=" + statusVeiculo
 				+ ", cidadeVeiculo=" + cidadeVeiculo + ", estadoVeiculo=" + estadoVeiculo + ", modelo=" + modelo + "]";
 	}
@@ -115,20 +115,20 @@ public class Veiculo {
 		this.idVeiculo = idVeiculo;
 	}
 	
-	/**
-	 * @return the agAutomotiva
-	 */
-	public AgenciaAutomotiva getAgAutomotiva() {
-		return agAutomotiva;
-	}
-	
-	/**
-	 * @param agAutomotiva the agAutomotiva to set
-	 */
-	public void setAgAutomotiva(AgenciaAutomotiva agAutomotiva) {
-		this.agAutomotiva = agAutomotiva;
-	}
-	
+//	/**
+//	 * @return the agAutomotiva
+//	 */
+//	public AgenciaAutomotiva getAgAutomotiva() {
+//		return agAutomotiva;
+//	}
+//	
+//	/**
+//	 * @param agAutomotiva the agAutomotiva to set
+//	 */
+//	public void setAgAutomotiva(AgenciaAutomotiva agAutomotiva) {
+//		this.agAutomotiva = agAutomotiva;
+//	}
+//	
 	/**
 	 * @return the placaVeiculo
 	 */

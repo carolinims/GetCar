@@ -52,6 +52,8 @@ public class UsuarioController {
 	@Transactional
 	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder){
 		Usuario usuario = form.converter();
+		
+		// ANTES DE SALVAR O USUARIO VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
 		userRepository.save(usuario);
 		
 		URI uri = uriBuilder.path("/user/{id}").buildAndExpand(usuario.getIdUsuario()).toUri();
@@ -102,6 +104,8 @@ public class UsuarioController {
 	@Transactional
 	public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody ClienteForm form, UriComponentsBuilder uriBuilder){	
 		Cliente cliente = form.converter();
+		
+		// ANTES DE SALVAR O USUARIO VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
 		
 		List<Perfil> perfilFromBd = new ArrayList<>();
 		for(Perfil perfil : cliente.getPerfis()) {

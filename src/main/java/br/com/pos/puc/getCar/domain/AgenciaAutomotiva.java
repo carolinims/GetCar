@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -30,7 +33,10 @@ public class AgenciaAutomotiva {
 	@OneToMany(mappedBy = "agAutomotiva", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Gerente> listGerente;
 	
-	@OneToMany(mappedBy = "agAutomotiva", fetch = FetchType.EAGER)
+	@ManyToMany
+	@JoinTable(name = "Veiculo_AgenciaAutomotiva", joinColumns = 
+	{@JoinColumn(name = "idAgenciaAutomotiva")}, inverseJoinColumns = 
+	{@JoinColumn(name = "idVeiculo")})
 	private Set<Veiculo> listVeiculo;
 	
 	/**

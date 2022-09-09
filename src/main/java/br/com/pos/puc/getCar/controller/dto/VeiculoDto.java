@@ -1,5 +1,9 @@
 package br.com.pos.puc.getCar.controller.dto;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
 import br.com.pos.puc.getCar.domain.Veiculo;
 import br.com.pos.puc.getCar.domain.enums.StatusVeiculo;
@@ -7,7 +11,7 @@ import br.com.pos.puc.getCar.domain.enums.StatusVeiculo;
 public class VeiculoDto {
 	
 	private Long idVeiculo;
-	private AgenciaAutomotivaDto agAutomotiva;
+//	private AgenciaAutomotivaDto agAutomotiva;
 	private String placaVeiculo;
 	private String renavam;
 	private Long valorHodometro;
@@ -15,6 +19,15 @@ public class VeiculoDto {
 	private String cidadeVeiculo;
 	private String estadoVeiculo;
 	private ModeloDto modeloDto;
+	
+	
+	/**
+	 * 
+	 */
+	public VeiculoDto() {
+
+	}
+
 	/**
 	 * @param idVeiculo
 	 * @param agAutomotiva
@@ -31,7 +44,7 @@ public class VeiculoDto {
 			ModeloDto modeloDto) {
 		super();
 		this.idVeiculo = idVeiculo;
-		this.agAutomotiva = agAutomotiva;
+//		this.agAutomotiva = agAutomotiva;
 		this.placaVeiculo = placaVeiculo;
 		this.renavam = renavam;
 		this.valorHodometro = valorHodometro;
@@ -44,7 +57,7 @@ public class VeiculoDto {
 	public VeiculoDto(Veiculo veiculo) {
 		super();
 		this.idVeiculo = veiculo.getIdVeiculo();
-		this.agAutomotiva = new AgenciaAutomotivaDto(veiculo.getAgAutomotiva());
+//		this.agAutomotiva = new AgenciaAutomotivaDto(veiculo.getAgAutomotiva());
 		this.placaVeiculo = veiculo.getPlacaVeiculo();
 		this.renavam = veiculo.getRenavam();
 		this.valorHodometro = veiculo.getValorHodometro();
@@ -66,19 +79,19 @@ public class VeiculoDto {
 	public void setIdVeiculo(Long idVeiculo) {
 		this.idVeiculo = idVeiculo;
 	}
-	/**
-	 * @return the agAutomotiva
-	 */
-	public AgenciaAutomotivaDto getAgAutomotiva() {
-		return agAutomotiva;
-	}
-
-	/**
-	 * @param agAutomotiva the agAutomotiva to set
-	 */
-	public void setAgAutomotiva(AgenciaAutomotivaDto agAutomotiva) {
-		this.agAutomotiva = agAutomotiva;
-	}
+//	/**
+//	 * @return the agAutomotiva
+//	 */
+//	public AgenciaAutomotivaDto getAgAutomotiva() {
+//		return agAutomotiva;
+//	}
+//
+//	/**
+//	 * @param agAutomotiva the agAutomotiva to set
+//	 */
+//	public void setAgAutomotiva(AgenciaAutomotivaDto agAutomotiva) {
+//		this.agAutomotiva = agAutomotiva;
+//	}
 
 	/**
 	 * @return the placaVeiculo
@@ -164,5 +177,11 @@ public class VeiculoDto {
 	public void setModeloDto(ModeloDto modeloDto) {
 		this.modeloDto = modeloDto;
 	}
+	
+	public static Page<VeiculoDto> converter(Page<Veiculo> veiculos){
+		return veiculos.map(VeiculoDto::new);
+		
+	}
+	
 	
 }
