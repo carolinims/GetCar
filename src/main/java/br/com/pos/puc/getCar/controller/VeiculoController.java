@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ import br.com.pos.puc.getCar.repository.VeiculoRepository;
 
 @RestController
 @RequestMapping("/veiculo")
+@CrossOrigin(origins = "http://localhost:3000")
 public class VeiculoController {
 	
 	private final static Logger logger = Logger.getLogger(VeiculoController.class);

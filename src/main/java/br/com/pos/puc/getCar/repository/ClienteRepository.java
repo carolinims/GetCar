@@ -6,4 +6,7 @@ import br.com.pos.puc.getCar.domain.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
+	Cliente findByLogin(String login);
+	
+	Cliente findByDocumento(Long documento);
 }

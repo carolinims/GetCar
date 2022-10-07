@@ -1,19 +1,15 @@
 package br.com.pos.puc.getCar.controller;
 
 import java.net.URI;
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +26,7 @@ import br.com.pos.puc.getCar.controller.form.UsuarioForm;
 import br.com.pos.puc.getCar.domain.Cliente;
 import br.com.pos.puc.getCar.domain.Perfil;
 import br.com.pos.puc.getCar.domain.Usuario;
+import br.com.pos.puc.getCar.exception.BusinessException;
 import br.com.pos.puc.getCar.exception.NotFoundException;
 import br.com.pos.puc.getCar.repository.ClienteRepository;
 import br.com.pos.puc.getCar.repository.PerfilRepository;
@@ -37,6 +34,7 @@ import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController {
 
 	@Autowired
@@ -52,6 +50,13 @@ public class UsuarioController {
 	@Transactional
 	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder){
 		Usuario usuario = form.converter();
+		
+		Optional<Usuario> usuarioByLogin = userRepository.findByLogin(usuario.getLogin());
+		if(usuarioByLogin.isPresent()) {
+			// usuario já existe, retornar erro
+			throw new BusinessException(String.format("Login [%s] já consta no sistema!", usuario.getLogin()),
+					null);
+		}
 		
 		// ANTES DE SALVAR O USUARIO VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
 		userRepository.save(usuario);
@@ -106,6 +111,20 @@ public class UsuarioController {
 		Cliente cliente = form.converter();
 		
 		// ANTES DE SALVAR O USUARIO VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
+		Optional<Cliente> clienteByLogin = Optional.ofNullable(clienteRepository.findByLogin(cliente.getLogin()));
+		if(clienteByLogin.isPresent()) {
+			// cliente já existe, retornar erro
+			throw new BusinessException(String.format("Login [%s] já consta no sistema!", cliente.getLogin()),
+					null);
+		}
+		
+		//verificar se o documento já existe
+		Optional<Cliente> clienteByDocumento = Optional.ofNullable(clienteRepository.findByDocumento(cliente.getDocumento())); 
+		if(clienteByDocumento.isPresent()) {
+			// cliente já existe, retornar erro
+			throw new BusinessException(String.format("Cliente com CPF [%s] já consta no sistema!", cliente.getDocumento()), 
+					null);
+		}
 		
 		List<Perfil> perfilFromBd = new ArrayList<>();
 		for(Perfil perfil : cliente.getPerfis()) {

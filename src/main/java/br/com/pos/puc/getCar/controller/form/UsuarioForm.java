@@ -18,7 +18,8 @@ public class UsuarioForm {
 	
 	@NotNull @NotEmpty @Length (min = 8)
 	private String senha;
- 
+	
+	@NotNull @NotEmpty
 	private List<PerfilForm> perfis;
 	
 	/**

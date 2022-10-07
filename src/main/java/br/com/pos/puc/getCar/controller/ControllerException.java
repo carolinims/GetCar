@@ -1,6 +1,7 @@
 package br.com.pos.puc.getCar.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @ControllerAdvice
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class ControllerException extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler(value = {NotFoundException.class, UsernameNotFoundException.class})
