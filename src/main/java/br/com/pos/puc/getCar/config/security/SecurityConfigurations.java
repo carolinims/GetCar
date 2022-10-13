@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import br.com.pos.puc.getCar.repository.UsuarioRepository;
 
@@ -44,6 +47,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 	//Configurações de autorização 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{		
+		http.cors().disable();
 		http.authorizeRequests()
 //		.antMatchers(HttpMethod.GET, "/user").permitAll()
 //		.antMatchers(HttpMethod.GET, "/user/*").permitAll()

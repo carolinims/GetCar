@@ -1,13 +1,21 @@
 package br.com.pos.puc.getCar.config.security;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,12 +49,20 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter{
 		}
 		
 		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "*");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "4800");
+
+
+        if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+            response.setHeader("Access-Control-Allow-Headers", "origin, x-requested-with, content-type, x-custom-header-here, authorization, x-authorization");
+            response.setHeader("Access-Control-Expose-Headers", "*");
+            
+        	response.setStatus(HttpStatus.OK.value());
+        } else {
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+      		filterChain.doFilter(request, response);
+        }
         
-  		filterChain.doFilter(request, response);
-		
 	}
 
 	private void autenticarCliente(String token) {
@@ -56,8 +72,10 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter{
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	
-	private String recuperarToken(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
+	private String recuperarToken(HttpServletRequest request) {	
+        String token= request.getHeader("Authorization");
+        System.out.println("Token: " + token);
+
 		if(token == null || token.isEmpty() || !token.startsWith("Bearer")) {
 			return null;
 		}
