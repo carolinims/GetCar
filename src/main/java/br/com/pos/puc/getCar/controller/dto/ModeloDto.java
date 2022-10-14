@@ -116,4 +116,5 @@ public class ModeloDto {
 	public void setCategoria(CategoriaVeiculo categoria) {
 		this.categoria = categoria;
 	}
+	
 }

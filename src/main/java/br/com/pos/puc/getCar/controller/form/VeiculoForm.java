@@ -14,6 +14,7 @@ public class VeiculoForm {
 	private String cidadeVeiculo;
 	private String estadoVeiculo;
 	private ModeloForm modelo;
+	private String imgVeiculo;
 	/**
 	 * @return the idVeiculo
 	 */
@@ -121,6 +122,19 @@ public class VeiculoForm {
 	 */
 	public void setModelo(ModeloForm modelo) {
 		this.modelo = modelo;
+	}	
+	
+	/**
+	 * @return the imgVeiculo
+	 */
+	public String getImgVeiculo() {
+		return imgVeiculo;
+	}
+	/**
+	 * @param imgVeiculo the imgVeiculo to set
+	 */
+	public void setImgVeiculo(String imgVeiculo) {
+		this.imgVeiculo = imgVeiculo;
 	}
 	public Veiculo converter() {
 		return new Veiculo(this.idVeiculo, 
@@ -131,6 +145,7 @@ public class VeiculoForm {
 				statusVeiculo, 
 				cidadeVeiculo, 
 				estadoVeiculo, 
+				imgVeiculo,
 				this.getModelo().converter());
 	}
 }

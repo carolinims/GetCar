@@ -51,3 +51,5 @@ Insert into agencia_automotiva(nome_agencia, endereco_id) values ('Agencia Get C
 Insert into modelo (categoria, descr_modelo, marca, tipo_combustivel, tipo_motorizacao) values
 ('HATCH',  'Veiculos do tipo HatchBack', 'TOYOTA',  'FLEX',  'MOTOR_1_4');
 
+insert into modelo (categoria, descr_modelo, marca, tipo_combustivel, tipo_motorizacao) values 
+('SEDAN', 'Veiculos do tipo SEDAN', 'HONDA', 'FLEX', 'MOTOR_1_4');

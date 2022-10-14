@@ -36,6 +36,7 @@ public class Veiculo {
 	private StatusVeiculo statusVeiculo;
 	private String cidadeVeiculo;
 	private String estadoVeiculo;
+	private String imgVeiculo;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idModelo")
@@ -63,7 +64,7 @@ public class Veiculo {
 	 * @param modelo
 	 */
 	public Veiculo(Long idVeiculo, AgenciaAutomotiva agAutomotiva, String placaVeiculo, String renavam,
-			Long valorHodometro, StatusVeiculo statusVeiculo, String cidadeVeiculo, String estadoVeiculo,
+			Long valorHodometro, StatusVeiculo statusVeiculo, String cidadeVeiculo, String estadoVeiculo, String imgVeiculo,
 			Modelo modelo) {
 		super();
 		this.idVeiculo = idVeiculo;
@@ -74,14 +75,16 @@ public class Veiculo {
 		this.statusVeiculo = statusVeiculo;
 		this.cidadeVeiculo = cidadeVeiculo;
 		this.estadoVeiculo = estadoVeiculo;
+		this.imgVeiculo = imgVeiculo;
 		this.modelo = modelo;
 	}
 	
 	@Override
 	public String toString() {
-		return "Veiculo [idVeiculo=" + idVeiculo +/* ", agAutomotiva=" + agAutomotiva +*/ ", placaVeiculo=" + placaVeiculo
-				+ ", renavam=" + renavam + ", valorHodometro=" + valorHodometro + ", statusVeiculo=" + statusVeiculo
-				+ ", cidadeVeiculo=" + cidadeVeiculo + ", estadoVeiculo=" + estadoVeiculo + ", modelo=" + modelo + "]";
+		return "Veiculo [idVeiculo=" + idVeiculo + ", placaVeiculo=" + placaVeiculo + ", renavam=" + renavam
+				+ ", valorHodometro=" + valorHodometro + ", statusVeiculo=" + statusVeiculo + ", cidadeVeiculo="
+				+ cidadeVeiculo + ", estadoVeiculo=" + estadoVeiculo + ", imgVeiculo=" + imgVeiculo + ", modelo="
+				+ modelo + ", listLocacoes=" + listLocacoes + "]";
 	}
 
 	@Override
@@ -211,6 +214,20 @@ public class Veiculo {
 	 */
 	public void setEstadoVeiculo(String estadoVeiculo) {
 		this.estadoVeiculo = estadoVeiculo;
+	}
+
+	/**
+	 * @return the imgVeiculo
+	 */
+	public String getImgVeiculo() {
+		return imgVeiculo;
+	}
+
+	/**
+	 * @param imgVeiculo the imgVeiculo to set
+	 */
+	public void setImgVeiculo(String imgVeiculo) {
+		this.imgVeiculo = imgVeiculo;
 	}
 
 	/**

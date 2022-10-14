@@ -1,6 +1,8 @@
 package br.com.pos.puc.getCar.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.pos.puc.getCar.controller.dto.ClienteDto;
+import br.com.pos.puc.getCar.controller.dto.ModeloDto;
 import br.com.pos.puc.getCar.controller.dto.VeiculoDto;
 import br.com.pos.puc.getCar.controller.form.VeiculoForm;
 import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
@@ -55,7 +58,7 @@ public class VeiculoController {
 	
 	@Autowired
 	private AgenciaAutomotivaRepository agAutomotivaRepository;
-	
+		
 	
 	@PostMapping("/cadastrar")
 	@Transactional
@@ -126,7 +129,7 @@ public class VeiculoController {
 	
 	@GetMapping("/listarVeiculos")
 	public Page<VeiculoDto> lista(@RequestParam(required = false) String marca, 
-			@PageableDefault(sort = "idVeiculo", direction = Direction.DESC, size = 10) Pageable paginacao){
+			@PageableDefault(sort = "idVeiculo", direction = Direction.DESC, size = 150) Pageable paginacao){
 				
 		if(marca == null) {
 			Page<Veiculo> veiculos = veiculoRepository.findAll(paginacao);
@@ -147,6 +150,24 @@ public class VeiculoController {
 		}
 		
 		return ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/listaModeloVeiculos")
+	public ResponseEntity<List<ModeloDto>> lista(){
+				
+		List<Modelo> listaModelo;
+		listaModelo = modeloRepository.findAll();
+				
+		if(!listaModelo.isEmpty()) {
+			List<ModeloDto> listModeloDto = new ArrayList<ModeloDto>();
+			listaModelo.stream().forEach(modelo -> {
+				listModeloDto.add(new ModeloDto(modelo));
+			});
+			
+			return ResponseEntity.ok(listModeloDto);
+		}
+		
+		throw new NotFoundException(String.format("Nenhum modelo encontrado"), "a lista de modelos está vazia");
 	}
 	
 }

@@ -19,6 +19,7 @@ public class VeiculoDto {
 	private String cidadeVeiculo;
 	private String estadoVeiculo;
 	private ModeloDto modeloDto;
+	private String imgVeiculo;
 	
 	
 	/**
@@ -41,7 +42,7 @@ public class VeiculoDto {
 	 */
 	public VeiculoDto(Long idVeiculo, AgenciaAutomotivaDto agAutomotiva, String placaVeiculo, String renavam,
 			Long valorHodometro, StatusVeiculo statusVeiculo, String cidadeVeiculo, String estadoVeiculo,
-			ModeloDto modeloDto) {
+			ModeloDto modeloDto, String imgVeiculo) {
 		super();
 		this.idVeiculo = idVeiculo;
 //		this.agAutomotiva = agAutomotiva;
@@ -52,6 +53,7 @@ public class VeiculoDto {
 		this.cidadeVeiculo = cidadeVeiculo;
 		this.estadoVeiculo = estadoVeiculo;
 		this.modeloDto = modeloDto;
+		this.imgVeiculo = imgVeiculo;
 	}
 	
 	public VeiculoDto(Veiculo veiculo) {
@@ -65,6 +67,7 @@ public class VeiculoDto {
 		this.cidadeVeiculo = veiculo.getCidadeVeiculo();
 		this.estadoVeiculo = veiculo.getEstadoVeiculo();
 		this.modeloDto = new ModeloDto(veiculo.getModelo());
+		this.imgVeiculo = veiculo.getImgVeiculo();
 	}
 	
 	/**
@@ -177,7 +180,21 @@ public class VeiculoDto {
 	public void setModeloDto(ModeloDto modeloDto) {
 		this.modeloDto = modeloDto;
 	}
-	
+		
+	/**
+	 * @return the imgVeiculo
+	 */
+	public String getImgVeiculo() {
+		return imgVeiculo;
+	}
+
+	/**
+	 * @param imgVeiculo the imgVeiculo to set
+	 */
+	public void setImgVeiculo(String imgVeiculo) {
+		this.imgVeiculo = imgVeiculo;
+	}
+
 	public static Page<VeiculoDto> converter(Page<Veiculo> veiculos){
 		return veiculos.map(VeiculoDto::new);
 		
