@@ -48,8 +48,9 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter{
 			autenticarCliente(token);
 		}
 		
-		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+//		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		response.setHeader("Access-Control-Allow-Origin", "http://getcar.com.s3-website-us-west-2.amazonaws.com");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "4800");
 
 

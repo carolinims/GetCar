@@ -52,4 +52,4 @@ Insert into modelo (categoria, descr_modelo, marca, tipo_combustivel, tipo_motor
 ('HATCH',  'Veiculos do tipo HatchBack', 'TOYOTA',  'FLEX',  'MOTOR_1_4');
 
 insert into modelo (categoria, descr_modelo, marca, tipo_combustivel, tipo_motorizacao) values 
-('SEDAN', 'Veiculos do tipo SEDAN', 'HONDA', 'FLEX', 'MOTOR_1_4');
+('SEDAN', 'Honda Civic 2021', 'HONDA', 'FLEX', 'MOTOR_1_4');
