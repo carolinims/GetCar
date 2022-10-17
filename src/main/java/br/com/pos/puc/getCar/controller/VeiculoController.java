@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +60,48 @@ public class VeiculoController {
 	@Autowired
 	private AgenciaAutomotivaRepository agAutomotivaRepository;
 		
+	@PutMapping("/editar")
+	@Transactional
+	public ResponseEntity<?> editar(@RequestBody VeiculoForm veiculoForm, UriComponentsBuilder uriBuilder) {
+		
+		// consulta para saber se veículo já existe na base, pois se não existe não é possivel editar
+		Optional<Veiculo> veiculoFromBd = (veiculoRepository.findById(veiculoForm.getIdVeiculo()));
+		if(!veiculoFromBd.isPresent()) {
+			// veiculo já existe, retornar erro
+			throw new BusinessException(String.format("Veiculo de id [%s] não pode ser editado pois não consta no sistema!", veiculoForm.getIdVeiculo()), 
+					null);
+		}
+		
+		// consulta para saber se a nova placa informada já existe na base
+		Optional<Veiculo> veiculoByPlaca = Optional.ofNullable(veiculoRepository.findByPlacaVeiculo(veiculoForm.getPlacaVeiculo()));
+		if(veiculoForm != null && veiculoByPlaca.isPresent()) {
+			// veiculo já existe, retornar erro
+			throw new BusinessException(String.format("Erro ao alterar placa, já consta no sistema veículo associado a placa [%s]!", veiculoForm.getPlacaVeiculo()), 
+					null);
+		}
+		
+		Veiculo veiculo = veiculoForm.converter();
+		
+		Optional<Modelo> modeloFromBd =  modeloRepository.findById(veiculoForm.getModelo().getIdModelo() == null 
+				? 0 
+				: veiculoForm.getModelo().getIdModelo());
+		if(modeloFromBd.isPresent()) {
+			veiculo.setModelo(modeloFromBd.get());
+		} else {
+			logger.error(String.format("Falha ao editar dados do veiculo - modelo de veiculo [%s] não encontrado, o id do modelo não foi informado ou é invalido",
+					veiculoForm.getModelo().getIdModelo()));
+			
+			throw new NotFoundException(String.format("Modelo de veiculo [%s] não encontrado", veiculoForm.getModelo().getIdModelo()), 
+					"O id do  modelo não foi informado ou é invalido");
+		}
+		
+		veiculoRepository.save(veiculo);
+		
+		URI uri = uriBuilder.path("/veiculo/{id}").buildAndExpand(veiculo.getIdVeiculo()).toUri();
+		
+		return ResponseEntity.created(uri).body(new VeiculoDto(veiculo));
+				
+	}
 	
 	@PostMapping("/cadastrar")
 	@Transactional
@@ -168,6 +211,5 @@ public class VeiculoController {
 		}
 		
 		throw new NotFoundException(String.format("Nenhum modelo encontrado"), "a lista de modelos está vazia");
-	}
-	
+	}	
 }
