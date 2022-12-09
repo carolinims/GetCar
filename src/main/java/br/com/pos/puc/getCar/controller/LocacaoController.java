@@ -24,9 +24,9 @@ public class LocacaoController {
 	
 	@GetMapping("/buscaVeiPorPeriodo")
 	public List<VeiculoDto> buscaVeiculoPorPeriodo(@RequestParam String dtHoraRetirada, @RequestParam String dtHoraDevolucao) {
-		LocalTime dtHrRetirada = LocalTime.parse(dtHoraRetirada);
+		LocalDateTime dtHrRetirada = LocalDateTime.parse(dtHoraRetirada);
 		
-		System.out.println(dtHrRetirada.toString());
+		System.out.println(dtHrRetirada.plusYears(1).plusHours(3).toString());
 		return null;
 		
 	}

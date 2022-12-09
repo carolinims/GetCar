@@ -138,7 +138,7 @@ public class VeiculoForm {
 	}
 	public Veiculo converter() {
 		return new Veiculo(this.idVeiculo, 
-				this.getAgAutomotiva().converter(), 
+				agAutomotiva == null ? null : this.getAgAutomotiva().converter(), 
 				placaVeiculo, 
 				renavam, 
 				valorHodometro, 
@@ -146,6 +146,6 @@ public class VeiculoForm {
 				cidadeVeiculo, 
 				estadoVeiculo, 
 				imgVeiculo,
-				this.getModelo().converter());
+				modelo == null ? null : this.getModelo().converter());
 	}
 }

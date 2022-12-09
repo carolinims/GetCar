@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -27,11 +28,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.pos.puc.getCar.controller.dto.ClienteDto;
+import br.com.pos.puc.getCar.controller.dto.GrupoVeiculoDto;
 import br.com.pos.puc.getCar.controller.dto.ModeloDto;
 import br.com.pos.puc.getCar.controller.dto.VeiculoDto;
+import br.com.pos.puc.getCar.controller.form.GrupoVeiculoForm;
 import br.com.pos.puc.getCar.controller.form.VeiculoForm;
 import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
 import br.com.pos.puc.getCar.domain.Cliente;
+import br.com.pos.puc.getCar.domain.GrupoDeVeiculos;
 import br.com.pos.puc.getCar.domain.Modelo;
 import br.com.pos.puc.getCar.domain.Veiculo;
 import br.com.pos.puc.getCar.domain.enums.CategoriaVeiculo;
@@ -41,6 +45,7 @@ import br.com.pos.puc.getCar.domain.enums.TipoMotorizacao;
 import br.com.pos.puc.getCar.exception.BusinessException;
 import br.com.pos.puc.getCar.exception.NotFoundException;
 import br.com.pos.puc.getCar.repository.AgenciaAutomotivaRepository;
+import br.com.pos.puc.getCar.repository.GrupoDeVeiculosRepository;
 import br.com.pos.puc.getCar.repository.ModeloRepository;
 import br.com.pos.puc.getCar.repository.VeiculoRepository;
 
@@ -59,6 +64,9 @@ public class VeiculoController {
 	
 	@Autowired
 	private AgenciaAutomotivaRepository agAutomotivaRepository;
+	
+	@Autowired
+	private GrupoDeVeiculosRepository gruveiculosRepository;
 		
 	@PutMapping("/editar")
 	@Transactional
@@ -212,4 +220,70 @@ public class VeiculoController {
 		
 		throw new NotFoundException(String.format("Nenhum modelo encontrado"), "a lista de modelos está vazia");
 	}	
+	
+	@GetMapping("/listarGruposVeiculo")
+	public ResponseEntity<List<GrupoVeiculoDto>> listarGrupos(){
+		List<GrupoDeVeiculos> listGrupos = gruveiculosRepository.findAll();
+		
+		if(!listGrupos.isEmpty()) {
+			List<GrupoVeiculoDto> listGruVeiculoDto = listGrupos
+					.stream()
+					.map(gru -> (GrupoVeiculoDto) new GrupoVeiculoDto(gru))
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(listGruVeiculoDto);
+		}
+		
+		throw new NotFoundException(String.format("Nenhum grupo de veiculos encontrado"), "a lista de grupos está vazia");
+	}
+	
+	
+	@PostMapping("/cadastrarGrupo")
+	@Transactional
+	public ResponseEntity<?> cadastrarGrupo(@RequestBody GrupoVeiculoForm grupoVeiculoForm, UriComponentsBuilder uriBuilder) {
+		GrupoDeVeiculos gruVeiculos = grupoVeiculoForm.converter();
+		
+		// consulta para saber se  possiveis veiculos da lista constam na base de dados
+		if(grupoVeiculoForm.getListaVeiculos() != null && !grupoVeiculoForm.getListaVeiculos().isEmpty()) {
+			List<Long> listIdVeiculos = grupoVeiculoForm.getListaVeiculos().stream().map(v -> (Long) v.getIdVeiculo()).collect(Collectors.toList());
+			
+			Optional<List<Veiculo>> veiculosFromBd = Optional.ofNullable(veiculoRepository.findAllById(listIdVeiculos));
+			if(veiculosFromBd.isPresent()) {
+				// veiculos retornaram da base, caso seja informado id de veiculos inexistente simplesmente não vai retornar nessa lista
+				// e não sera cadastrado
+				gruVeiculos.getListVeiculo().clear();
+				gruVeiculos.setListVeiculo(veiculosFromBd.get().stream().collect(Collectors.toSet()));
+			}
+		}
+		
+		gruveiculosRepository.save(gruVeiculos);
+		
+		URI uri = uriBuilder.path("/veiculo/consultarGrupo/{id}").buildAndExpand(gruVeiculos.getIdGrupoVeiculo()).toUri();
+		
+		return ResponseEntity.created(uri).body(new GrupoVeiculoDto(gruVeiculos));
+		
+	}
+	
+	@DeleteMapping("/excluirGrupo/{id}")
+	@Transactional
+	public ResponseEntity<?> excluirGrupo(@PathVariable Long id){
+		Optional<GrupoDeVeiculos> optional = gruveiculosRepository.findById(id);
+		if(optional.isPresent()) {
+			gruveiculosRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		
+		throw new NotFoundException(String.format("Grupo de id [%s] não encontrado", id), "Não foi possivel excluir pois o grupo não existe");
+	}
+	
+	@GetMapping("/consultarGrupo/{id}")
+	public ResponseEntity<GrupoVeiculoDto> consultarGrupo(@PathVariable Long id){
+		Optional<GrupoDeVeiculos> gruVeiculo = gruveiculosRepository.findById(id);
+		
+		if(gruVeiculo.isPresent()) {
+			return ResponseEntity.ok(new GrupoVeiculoDto(gruVeiculo.get()));
+		}
+		
+		throw new NotFoundException(String.format("Grupo de id [%s] não encontrado", id), null);
+	}
+	
 }

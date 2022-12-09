@@ -1,10 +1,6 @@
 package br.com.pos.puc.getCar.controller.dto;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
-
-import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
 import br.com.pos.puc.getCar.domain.Veiculo;
 import br.com.pos.puc.getCar.domain.enums.StatusVeiculo;
 
