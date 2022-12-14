@@ -28,6 +28,7 @@ public class Pagamento implements Serializable{
 	
 	@Enumerated(EnumType.STRING)
 	private StatusPagamento statusPagto;
+	
 	private BigDecimal valor;
 	
 	@OneToMany(mappedBy = "idMulta", fetch = FetchType.EAGER)

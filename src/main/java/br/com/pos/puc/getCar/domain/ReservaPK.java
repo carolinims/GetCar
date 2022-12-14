@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -18,16 +20,15 @@ public class ReservaPK implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected Long idReserva;
+	protected String idReserva;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idUsuario")
 	protected Cliente cliente;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idVeiculo")
-	protected Veiculo veiculo;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "idVeiculo")
+//	protected Veiculo veiculo;
 	
 	protected Date DtHrRetiradaVeiculo;
 	
@@ -47,19 +48,19 @@ public class ReservaPK implements Serializable{
 	public ReservaPK(Cliente cliente, Veiculo veiculo, Date dtHrRetiradaVeiculo) {
 		super();
 		this.cliente = cliente;
-		this.veiculo = veiculo;
+//		this.veiculo = veiculo;
 		DtHrRetiradaVeiculo = dtHrRetiradaVeiculo;
 	}
 
 	@Override
 	public String toString() {
-		return "ReservaPK [cliente=" + cliente + ", veiculo=" + veiculo + ", DtHrRetiradaVeiculo=" + DtHrRetiradaVeiculo
-				+ "]";
+		return "ReservaPK [idReserva=" + idReserva + ", cliente=" + cliente + ", DtHrRetiradaVeiculo="
+				+ DtHrRetiradaVeiculo + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(DtHrRetiradaVeiculo, cliente, idReserva, veiculo);
+		return Objects.hash(DtHrRetiradaVeiculo, cliente, idReserva);
 	}
 
 	@Override
@@ -72,7 +73,22 @@ public class ReservaPK implements Serializable{
 			return false;
 		ReservaPK other = (ReservaPK) obj;
 		return Objects.equals(DtHrRetiradaVeiculo, other.DtHrRetiradaVeiculo) && Objects.equals(cliente, other.cliente)
-				&& Objects.equals(idReserva, other.idReserva) && Objects.equals(veiculo, other.veiculo);
+				&& Objects.equals(idReserva, other.idReserva);
+	}
+	
+
+	/**
+	 * @return the idReserva
+	 */
+	public String getIdReserva() {
+		return idReserva;
+	}
+
+	/**
+	 * @param idReserva the idReserva to set
+	 */
+	public void setIdReserva(String idReserva) {
+		this.idReserva = idReserva;
 	}
 
 	/**
@@ -89,19 +105,19 @@ public class ReservaPK implements Serializable{
 		this.cliente = cliente;
 	}
 
-	/**
-	 * @return the veiculo
-	 */
-	public Veiculo getVeiculo() {
-		return veiculo;
-	}
-
-	/**
-	 * @param veiculo the veiculo to set
-	 */
-	public void setVeiculo(Veiculo veiculo) {
-		this.veiculo = veiculo;
-	}
+//	/**
+//	 * @return the veiculo
+//	 */
+//	public Veiculo getVeiculo() {
+//		return veiculo;
+//	}
+//
+//	/**
+//	 * @param veiculo the veiculo to set
+//	 */
+//	public void setVeiculo(Veiculo veiculo) {
+//		this.veiculo = veiculo;
+//	}
 
 	/**
 	 * @return the dtHrRetiradaVeiculo

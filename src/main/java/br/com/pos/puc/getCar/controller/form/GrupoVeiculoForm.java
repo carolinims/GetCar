@@ -83,7 +83,7 @@ public class GrupoVeiculoForm {
 		return new GrupoDeVeiculos(
 				this.idGrupoVeiculo,
 				this.descrGrupo, 
-				categoriaVeiculo.stream().collect(Collectors.toSet()), 
+				categoriaVeiculo == null ? null : categoriaVeiculo.stream().collect(Collectors.toSet()), 
 				listaVeiculos == null ? null : listaVeiculos.stream().map(veiculo -> (Veiculo) veiculo.converter()).collect(Collectors.toSet()),
 				this.valorDiaria);
 	}

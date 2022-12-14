@@ -167,16 +167,17 @@ public class ClienteForm {
 	}
 
 	public Cliente converter() {
-		Usuario usuario = this.usuario.converter();
-		return new Cliente(usuario.getLogin(), 
-				usuario.getSenha(), 
-				usuario.getPerfis(), 
+		Usuario u = usuario != null ? this.usuario.converter() : null;
+		return new Cliente(u == null ? null : u.getIdUsuario(),
+				u == null ? null : u.getLogin(), 
+				u == null ? null : u.getSenha(), 
+				u == null ? null : u.getPerfis(), 
 				nome, 
 				documento, 
 				dataNasc, 
 				cnh, 
 				genero, 
-				this.endereco.converter(), 
+				this.endereco == null? null : this.endereco.converter(), 
 				telefone, 
 				nacionalidade);
 	}

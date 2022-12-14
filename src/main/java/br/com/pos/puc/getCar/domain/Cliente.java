@@ -79,9 +79,9 @@ public class Cliente extends Usuario{
 	 * @param telefone
 	 * @param nacionalidade
 	 */
-	public Cliente(String login, String senha, List<Perfil> perfis, String nome, Long documento, Date dataNasc, String cnh, String genero, Endereco endereco,
+	public Cliente(Long id, String login, String senha, List<Perfil> perfis, String nome, Long documento, Date dataNasc, String cnh, String genero, Endereco endereco,
 			Integer telefone, String nacionalidade) {
-		super(null, login, senha, perfis);
+		super(id, login, senha, perfis);
 		this.nome = nome;
 		this.documento = documento;
 		this.dataNasc = dataNasc;
@@ -92,6 +92,8 @@ public class Cliente extends Usuario{
 		this.nacionalidade = nacionalidade;
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "Cliente [nome=" + nome + ", documento=" + documento + ", dataNasc=" + dataNasc + ", cnh=" + cnh

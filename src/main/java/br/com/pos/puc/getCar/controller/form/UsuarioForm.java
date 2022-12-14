@@ -22,6 +22,8 @@ public class UsuarioForm {
 	@NotNull @NotEmpty
 	private List<PerfilForm> perfis;
 	
+	private Long idUsuario;
+	
 	/**
 	 * @return the login
 	 */
@@ -64,9 +66,23 @@ public class UsuarioForm {
 		this.perfis = perfis;
 	}
 
+	/**
+	 * @return the idUsuario
+	 */
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	/**
+	 * @param idUsuario the idUsuario to set
+	 */
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
 	public Usuario converter() {
-		return new Usuario(null, this.login, this.senha, 
-				perfis.stream()
+		return new Usuario(this.idUsuario, this.login, this.senha, 
+				perfis == null || perfis.isEmpty()? null : perfis.stream()
 				.map(perfil -> (Perfil) perfil.converter())
 				.collect(Collectors.toList()));
 	}

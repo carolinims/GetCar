@@ -27,21 +27,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.pos.puc.getCar.controller.dto.ClienteDto;
 import br.com.pos.puc.getCar.controller.dto.GrupoVeiculoDto;
 import br.com.pos.puc.getCar.controller.dto.ModeloDto;
 import br.com.pos.puc.getCar.controller.dto.VeiculoDto;
 import br.com.pos.puc.getCar.controller.form.GrupoVeiculoForm;
 import br.com.pos.puc.getCar.controller.form.VeiculoForm;
-import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
-import br.com.pos.puc.getCar.domain.Cliente;
 import br.com.pos.puc.getCar.domain.GrupoDeVeiculos;
 import br.com.pos.puc.getCar.domain.Modelo;
 import br.com.pos.puc.getCar.domain.Veiculo;
-import br.com.pos.puc.getCar.domain.enums.CategoriaVeiculo;
-import br.com.pos.puc.getCar.domain.enums.Marcas;
-import br.com.pos.puc.getCar.domain.enums.TipoCombustivel;
-import br.com.pos.puc.getCar.domain.enums.TipoMotorizacao;
 import br.com.pos.puc.getCar.exception.BusinessException;
 import br.com.pos.puc.getCar.exception.NotFoundException;
 import br.com.pos.puc.getCar.repository.AgenciaAutomotivaRepository;
@@ -66,7 +59,7 @@ public class VeiculoController {
 	private AgenciaAutomotivaRepository agAutomotivaRepository;
 	
 	@Autowired
-	private GrupoDeVeiculosRepository gruveiculosRepository;
+	private GrupoDeVeiculosRepository gruVeiculosRepository;
 		
 	@PutMapping("/editar")
 	@Transactional
@@ -223,7 +216,7 @@ public class VeiculoController {
 	
 	@GetMapping("/listarGruposVeiculo")
 	public ResponseEntity<List<GrupoVeiculoDto>> listarGrupos(){
-		List<GrupoDeVeiculos> listGrupos = gruveiculosRepository.findAll();
+		List<GrupoDeVeiculos> listGrupos = gruVeiculosRepository.findAll();
 		
 		if(!listGrupos.isEmpty()) {
 			List<GrupoVeiculoDto> listGruVeiculoDto = listGrupos
@@ -255,7 +248,7 @@ public class VeiculoController {
 			}
 		}
 		
-		gruveiculosRepository.save(gruVeiculos);
+		gruVeiculosRepository.save(gruVeiculos);
 		
 		URI uri = uriBuilder.path("/veiculo/consultarGrupo/{id}").buildAndExpand(gruVeiculos.getIdGrupoVeiculo()).toUri();
 		
@@ -266,9 +259,9 @@ public class VeiculoController {
 	@DeleteMapping("/excluirGrupo/{id}")
 	@Transactional
 	public ResponseEntity<?> excluirGrupo(@PathVariable Long id){
-		Optional<GrupoDeVeiculos> optional = gruveiculosRepository.findById(id);
+		Optional<GrupoDeVeiculos> optional = gruVeiculosRepository.findById(id);
 		if(optional.isPresent()) {
-			gruveiculosRepository.deleteById(id);
+			gruVeiculosRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
 		
@@ -277,13 +270,57 @@ public class VeiculoController {
 	
 	@GetMapping("/consultarGrupo/{id}")
 	public ResponseEntity<GrupoVeiculoDto> consultarGrupo(@PathVariable Long id){
-		Optional<GrupoDeVeiculos> gruVeiculo = gruveiculosRepository.findById(id);
+		Optional<GrupoDeVeiculos> gruVeiculo = gruVeiculosRepository.findById(id);
 		
 		if(gruVeiculo.isPresent()) {
 			return ResponseEntity.ok(new GrupoVeiculoDto(gruVeiculo.get()));
 		}
 		
 		throw new NotFoundException(String.format("Grupo de id [%s] não encontrado", id), null);
+	}
+	
+	@PutMapping("/adicionarVeiculoGrupo")
+	@Transactional
+	public ResponseEntity<?> adicionarVeiculoGrupo(@RequestParam Long idVeiculo, @RequestParam Long idGrupo, UriComponentsBuilder uriBuilder) {
+		Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+		if(!veiculo.isPresent()) {
+			throw new NotFoundException(String.format("Veiculo de id [%s] não encontrado", idVeiculo), "Falha ao cadastrar veículo no grupo");
+		}
+		
+		Optional<GrupoDeVeiculos> gruVeiculo = gruVeiculosRepository.findById(idGrupo);
+		if(!gruVeiculo.isPresent()) {
+			throw new NotFoundException(String.format("Grupo de id [%s] não encontrado", idGrupo), "Falha ao cadastrar veículo no grupo");
+		}
+		
+		gruVeiculo.get().getListVeiculo().add(veiculo.get());
+		
+		gruVeiculosRepository.save(gruVeiculo.get());
+		
+		URI uri = uriBuilder.path("/consultarGrupo/{id}").buildAndExpand(gruVeiculo.get().getIdGrupoVeiculo()).toUri();
+		
+		return ResponseEntity.created(uri).body(new GrupoVeiculoDto(gruVeiculo.get()));	
+	}
+	
+	@PutMapping("/removerVeiculoGrupo")
+	@Transactional
+	public ResponseEntity<?> removerVeiculoGrupo(@RequestParam Long idVeiculo, @RequestParam Long idGrupo, UriComponentsBuilder uriBuilder) {
+		Optional<Veiculo> veiculo = veiculoRepository.findById(idVeiculo);
+		if(!veiculo.isPresent()) {
+			throw new NotFoundException(String.format("Veiculo de id [%s] não encontrado", idVeiculo), "Falha ao remover veículo do grupo");
+		}
+		
+		Optional<GrupoDeVeiculos> gruVeiculo = gruVeiculosRepository.findById(idGrupo);
+		if(!gruVeiculo.isPresent()) {
+			throw new NotFoundException(String.format("Grupo de id [%s] não encontrado", idGrupo), "Falha ao remover veículo do grupo");
+		}
+		
+		gruVeiculo.get().getListVeiculo().remove(veiculo.get());
+		
+		gruVeiculosRepository.save(gruVeiculo.get());
+		
+		URI uri = uriBuilder.path("/consultarGrupo/{id}").buildAndExpand(gruVeiculo.get().getIdGrupoVeiculo()).toUri();
+		
+		return ResponseEntity.created(uri).body(new GrupoVeiculoDto(gruVeiculo.get()));	
 	}
 	
 }

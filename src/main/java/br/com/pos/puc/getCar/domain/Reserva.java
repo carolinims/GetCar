@@ -1,12 +1,17 @@
 package br.com.pos.puc.getCar.domain;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+
+import br.com.pos.puc.getCar.domain.enums.StatusReserva;
 
 @Entity
 public class Reserva {
@@ -21,6 +26,9 @@ public class Reserva {
     
     @OneToOne(cascade = CascadeType.ALL, fetch =  FetchType.EAGER)
     private Pagamento pagamento;
+    
+    @Enumerated(EnumType.STRING)
+	private StatusReserva statusReserva;
    
 	/**
 	 * 
@@ -35,12 +43,32 @@ public class Reserva {
 	 * @param dateDtHrPrevDevolucao
 	 * @param pagamento
 	 */
-	public Reserva(ReservaPK reservaPK, GrupoDeVeiculos grupoVeiculo, Date dateDtHrPrevDevolucao, Pagamento pagamento) {
+	public Reserva(ReservaPK reservaPK, GrupoDeVeiculos grupoVeiculo, Date dateDtHrPrevDevolucao, Pagamento pagamento, StatusReserva statusReserva) {
 		super();
 		this.reservaPK = reservaPK;
 		this.grupoVeiculo = grupoVeiculo;
 		DateDtHrPrevDevolucao = dateDtHrPrevDevolucao;
 		this.pagamento = pagamento;
+		this.statusReserva = statusReserva;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(DateDtHrPrevDevolucao, grupoVeiculo, pagamento, reservaPK, statusReserva);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Reserva other = (Reserva) obj;
+		return Objects.equals(DateDtHrPrevDevolucao, other.DateDtHrPrevDevolucao)
+				&& Objects.equals(grupoVeiculo, other.grupoVeiculo) && Objects.equals(pagamento, other.pagamento)
+				&& Objects.equals(reservaPK, other.reservaPK) && statusReserva == other.statusReserva;
 	}
 
 	/**
@@ -98,6 +126,21 @@ public class Reserva {
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
 	}
+
+	/**
+	 * @return the statusReserva
+	 */
+	public StatusReserva getStatusReserva() {
+		return statusReserva;
+	}
+
+	/**
+	 * @param statusReserva the statusReserva to set
+	 */
+	public void setStatusReserva(StatusReserva statusReserva) {
+		this.statusReserva = statusReserva;
+	}
+	
     
     
 }

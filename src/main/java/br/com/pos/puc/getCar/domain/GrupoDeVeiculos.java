@@ -9,6 +9,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class GrupoDeVeiculos {
 	@Transient
 	private Set<CategoriaVeiculo> listCategoriaVeiculo;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "Veiculo_GrupoDeVeiculos", joinColumns = 
 	{@JoinColumn(name = "idGrupoVeiculo")}, inverseJoinColumns = 
 	{@JoinColumn(name = "idVeiculo")})

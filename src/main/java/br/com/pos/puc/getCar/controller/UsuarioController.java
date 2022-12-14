@@ -110,13 +110,15 @@ public class UsuarioController {
 	public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody ClienteForm form, UriComponentsBuilder uriBuilder){	
 		Cliente cliente = form.converter();
 		
-		// ANTES DE SALVAR O USUARIO VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
-		Optional<Cliente> clienteByLogin = Optional.ofNullable(clienteRepository.findByLogin(cliente.getLogin()));
-		if(clienteByLogin.isPresent()) {
-			// cliente já existe, retornar erro
-			throw new BusinessException(String.format("Login [%s] já consta no sistema!", cliente.getLogin()),
-					null);
-		}
+		// ANTES DE SALVAR O USUARIO, CASO TENHA SIDO INFORMADO LOGIN, VERIFICAR SE O LOGIN DELE JÁ EXISTE NO SISTEMA!!!!!!!!
+		if(cliente.getLogin() != null && !cliente.getLogin().isEmpty()) {
+			Optional<Cliente> clienteByLogin = Optional.ofNullable(clienteRepository.findByLogin(cliente.getLogin()));
+			if(clienteByLogin.isPresent()) {
+				// cliente já existe, retornar erro
+				throw new BusinessException(String.format("Login [%s] já consta no sistema!", cliente.getLogin()),
+						null);
+			}
+		} 
 		
 		//verificar se o documento já existe
 		Optional<Cliente> clienteByDocumento = Optional.ofNullable(clienteRepository.findByDocumento(cliente.getDocumento())); 
@@ -126,14 +128,17 @@ public class UsuarioController {
 					null);
 		}
 		
-		List<Perfil> perfilFromBd = new ArrayList<>();
-		for(Perfil perfil : cliente.getPerfis()) {
-			Optional<Perfil> optPerfil = perfilRepository.findById(perfil.getId());
-			if(optPerfil.isPresent()) {
-				perfilFromBd.add(optPerfil.get());
+		// SÓ RELACIONA PERFIL SE CADASTRO DE CLIENTE FOR FEITO COM LOGIN DE USUARIO
+		if(cliente.getLogin() != null && !cliente.getLogin().isEmpty()) {
+			List<Perfil> perfilFromBd = new ArrayList<>();
+			for(Perfil perfil : cliente.getPerfis()) {
+				Optional<Perfil> optPerfil = perfilRepository.findById(perfil.getId());
+				if(optPerfil.isPresent()) {
+					perfilFromBd.add(optPerfil.get());
+				}
 			}
+			cliente.setPerfis(perfilFromBd.isEmpty()? cliente.getPerfis() : perfilFromBd);
 		}
-		cliente.setPerfis(perfilFromBd.isEmpty()? cliente.getPerfis() : perfilFromBd);
 		
 		clienteRepository.save(cliente);
 		

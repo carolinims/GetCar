@@ -55,7 +55,7 @@ public class ClienteDto {
 	 */
 	public ClienteDto(Cliente cliente) {
 		super();
-		this.usuario = new UsuarioDto(cliente.getIdUsuario(), cliente.getLogin(), cliente.getSenha(), 
+		this.usuario = cliente.getLogin() == null ? null : new UsuarioDto(cliente.getIdUsuario(), cliente.getLogin(), cliente.getSenha(), 
 				cliente.getPerfis()
 				.stream()
 				.map(perfil -> new PerfilDto().converter(perfil))
