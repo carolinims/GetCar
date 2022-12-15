@@ -1,9 +1,12 @@
 package br.com.pos.puc.getCar.controller.form;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.pos.puc.getCar.domain.AgenciaAutomotiva;
 import br.com.pos.puc.getCar.domain.Gerente;
+import br.com.pos.puc.getCar.domain.Perfil;
 
 public class GerenteForm {
 	
@@ -48,15 +51,12 @@ public class GerenteForm {
 	}
 	
 	public Gerente converter() {
+		List<Perfil> p = new ArrayList<>();
+		p.add(getUsuarioForm().getPerfil().converter());
 		return new Gerente(null, 
 				this.usuarioForm.getLogin(),
 				this.getUsuarioForm().getSenha(),
-				
-				this.getUsuarioForm().getPerfis()
-				.stream()
-				.map(perfil -> perfil.converter())
-				.collect(Collectors.toList()),
-
+				p,
 				this.nome,
 				this.agAutomotiva);
 	}

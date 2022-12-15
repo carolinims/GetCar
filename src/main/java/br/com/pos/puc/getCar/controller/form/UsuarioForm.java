@@ -1,5 +1,6 @@
 package br.com.pos.puc.getCar.controller.form;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UsuarioForm {
 	private String senha;
 	
 	@NotNull @NotEmpty
-	private List<PerfilForm> perfis;
+	private PerfilForm perfil;
 	
 	private Long idUsuario;
 	
@@ -52,18 +53,19 @@ public class UsuarioForm {
 		this.senha = senha;
 	}
 		
+
 	/**
-	 * @return the perfis
+	 * @return the perfil
 	 */
-	public List<PerfilForm> getPerfis() {
-		return perfis;
+	public PerfilForm getPerfil() {
+		return perfil;
 	}
 
 	/**
-	 * @param perfis the perfis to set
+	 * @param perfil the perfil to set
 	 */
-	public void setPerfis(List<PerfilForm> perfis) {
-		this.perfis = perfis;
+	public void setPerfil(PerfilForm perfil) {
+		this.perfil = perfil;
 	}
 
 	/**
@@ -81,10 +83,10 @@ public class UsuarioForm {
 	}
 
 	public Usuario converter() {
-		return new Usuario(this.idUsuario, this.login, this.senha, 
-				perfis == null || perfis.isEmpty()? null : perfis.stream()
-				.map(perfil -> (Perfil) perfil.converter())
-				.collect(Collectors.toList()));
+		List<Perfil> p = new ArrayList<>();
+		p.add(perfil.converter());
+		
+		return new Usuario(this.idUsuario, this.login, this.senha, p);
 	}
 	
 }

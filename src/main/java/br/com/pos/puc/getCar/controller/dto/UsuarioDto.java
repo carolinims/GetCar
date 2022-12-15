@@ -10,19 +10,19 @@ public class UsuarioDto {
 	private Long id;
 	private String login;
 	private String senha;
-	private List<PerfilDto> perfis;
+	private PerfilDto perfil;
 	
 	/**
 	 * @param id
 	 * @param login
 	 * @param senha
 	 */
-	public UsuarioDto(Long id, String login, String senha, List<PerfilDto> perfis) {
+	public UsuarioDto(Long id, String login, String senha, PerfilDto perfil) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.senha = senha;
-		this.perfis = perfis;
+		this.perfil = perfil;
 	}
 	
 	public UsuarioDto(Usuario usuario) {
@@ -33,7 +33,7 @@ public class UsuarioDto {
 		for(Perfil perfil : usuario.getPerfis()) {
 			listPerfilDto.add(new PerfilDto().converter(perfil));
 		}
-		this.perfis = listPerfilDto ;
+		this.perfil = listPerfilDto.get(0) ;
 	}
 	
 	/**
@@ -74,17 +74,17 @@ public class UsuarioDto {
 	}
 
 	/**
-	 * @return the perfis
+	 * @return the perfil
 	 */
-	public List<PerfilDto> getPerfis() {
-		return perfis;
+	public PerfilDto getPerfil() {
+		return perfil;
 	}
 
 	/**
-	 * @param perfis the perfis to set
+	 * @param perfil the perfil to set
 	 */
-	public void setPerfis(List<PerfilDto> perfis) {
-		this.perfis = perfis;
+	public void setPerfil(PerfilDto perfil) {
+		this.perfil = perfil;
 	}
 
 	

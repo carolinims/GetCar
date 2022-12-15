@@ -31,7 +31,7 @@ public class AtendenteDto {
 				atendente.getNome(), 
 				atendente.getPerfis().stream()
 				.map(perfil -> new PerfilDto().converter(perfil))
-				.collect(Collectors.toList()));
+				.collect(Collectors.toList()).get(0));
 		this.nome = atendente.getNome();
 		this.agAutomotiva = new AgenciaAutomotivaDto(atendente.getAgAutomotiva());
 	}

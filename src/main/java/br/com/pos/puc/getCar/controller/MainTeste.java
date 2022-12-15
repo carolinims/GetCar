@@ -7,9 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
+import br.com.pos.puc.getCar.repository.UsuarioRepository;
+
 public class MainTeste {
+	
+	@Autowired
+	private UsuarioRepository userRepository;
 
 	public static void main(String[] args) {
 
@@ -28,12 +35,11 @@ public class MainTeste {
 //		mapReservaPorGrupo.put(2L, 1);
 //		mapReservaPorGrupo.put(1L, 2);
 		
-		for(int i=0; i<10; i++) {
-			mapReservaPorGrupo.put(1L, mapReservaPorGrupo.get(1L) == null? 1 : mapReservaPorGrupo.get(1L) +1);
-			System.out.println(mapReservaPorGrupo);
-		}
+//		for(int i=0; i<10; i++) {
+//			mapReservaPorGrupo.put(1L, mapReservaPorGrupo.get(1L) == null? 1 : mapReservaPorGrupo.get(1L) +1);
+//			System.out.println(mapReservaPorGrupo);
+//		}
 		
-
 	}
 
 }

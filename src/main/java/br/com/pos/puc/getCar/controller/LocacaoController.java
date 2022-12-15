@@ -109,22 +109,18 @@ public class LocacaoController {
 			if(dtHrRetirada.isAfter(thisDataRetirada) && dtHrRetirada.isBefore(thisDataPrevDev)) {
 				mapReservaPorGrupo.put(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo(), 
 						mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) == null ? 1 : mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) +1);
-//				throw new BusinessException(String.format("A retirada [%s] conflita com a reserva de [%s] á [%s]", dtHrRetirada.toString(), reservaAtiva.getReservaPK().getDtHrRetiradaVeiculo().toString(), reservaAtiva.getDateDtHrPrevDevolucao().toString()), null);
 			
 			} else if(dtHrDevolucao.isAfter(thisDataRetirada) && dtHrDevolucao.isBefore(thisDataPrevDev)) {
 				mapReservaPorGrupo.put(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo(), 
 						mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) == null ? 1 : mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) +1);
-//				throw new BusinessException(String.format("A devolucao [%s] conflita com a reserva de [%s] á [%s]", dtHrDevolucao.toString(), reservaAtiva.getReservaPK().getDtHrRetiradaVeiculo().toString(), reservaAtiva.getDateDtHrPrevDevolucao().toString()), null);
 			
 			} else if(thisDataRetirada.isAfter(dtHrRetirada) && thisDataRetirada.isBefore(dtHrDevolucao)) {
 				mapReservaPorGrupo.put(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo(), 
 						mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) == null ? 1 : mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) +1);
-//				throw new BusinessException(String.format("A retirada da reserva [%s] do dia [%s] conflita com o periodo requisitado de [%s] á [%s]", reservaAtiva.getReservaPK().getIdReserva(), reservaAtiva.getReservaPK().getDtHrRetiradaVeiculo().toString(), dtHrRetirada.toString(), dtHrDevolucao.toString()), null);
 			
 			} else if(thisDataPrevDev.isAfter(dtHrRetirada) && thisDataPrevDev.isBefore(dtHrDevolucao)) {
 				mapReservaPorGrupo.put(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo(), 
 						mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) == null ? 1 : mapReservaPorGrupo.get(reservaAtiva.getGrupoVeiculo().getIdGrupoVeiculo()) +1);
-//				throw new BusinessException(String.format("A devolucao da reserva [%s] do dia [%s] conflita com o periodo requisitado de [%s] á [%s]", reservaAtiva.getReservaPK().getIdReserva(), reservaAtiva.getDateDtHrPrevDevolucao().toString() , dtHrRetirada.toString(), dtHrDevolucao.toString()), null);
 
 			}
 		}

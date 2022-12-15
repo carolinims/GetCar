@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import br.com.pos.puc.getCar.controller.form.UsuarioForm;
 import br.com.pos.puc.getCar.domain.Cliente;
 import br.com.pos.puc.getCar.domain.Perfil;
 import br.com.pos.puc.getCar.domain.Usuario;
+import br.com.pos.puc.getCar.domain.enums.TipoUsuario;
 import br.com.pos.puc.getCar.exception.BusinessException;
 import br.com.pos.puc.getCar.exception.NotFoundException;
 import br.com.pos.puc.getCar.repository.ClienteRepository;
@@ -50,6 +52,9 @@ public class UsuarioController {
 	@Transactional
 	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder){
 		Usuario usuario = form.converter();
+		
+		BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
+		usuario.setSenha(enconder.encode(usuario.getSenha()));
 		
 		Optional<Usuario> usuarioByLogin = userRepository.findByLogin(usuario.getLogin());
 		if(usuarioByLogin.isPresent()) {
@@ -81,10 +86,14 @@ public class UsuarioController {
 	public ResponseEntity<List<UsuarioDto>> listarUsuarios(){
 		List<Usuario> listUsuario = userRepository.findAll();
 		
+//		List<Usuario> listUsuario = userRepository.listaUsuariosNaoCliente(TipoUsuario.CLIENTE.toString());
+		
 		if(!listUsuario.isEmpty()) {
 			List<UsuarioDto> listUserDto = new ArrayList<UsuarioDto>();
 			listUsuario.stream().forEach(usuario -> {
-				listUserDto.add(new UsuarioDto(usuario));
+				if(usuario.getPerfis().get(0).getTipoUsuario() != TipoUsuario.CLIENTE) {
+					listUserDto.add(new UsuarioDto(usuario));
+				}
 			});
 			
 			return ResponseEntity.ok(listUserDto);
